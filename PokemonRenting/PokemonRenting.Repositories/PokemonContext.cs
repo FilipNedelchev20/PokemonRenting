@@ -18,5 +18,8 @@ namespace PokemonRenting.Repositories
             
         }
         public DbSet<Pokemon> Pokemons { get; set; }
+       
+
+
     }
 }

@@ -68,7 +68,7 @@ namespace PokemonRenting.Repositories.Implementation
                 {
                     pokemonFromDB.PokemonImage = pokemon.PokemonImage;
                 }
-                pokemonFromDB.Weakness = pokemon.Weakness;
+                pokemonFromDB.Generation = pokemon.Generation;
                 pokemonFromDB.PokemonPrice = pokemon.PokemonPrice;
                 pokemonFromDB.UpdatedAt = DateTime.UtcNow;
                 pokemonFromDB.PokemonDescription = pokemon.PokemonDescription;        
