@@ -21,7 +21,7 @@ namespace PokemonRentingModels
         [Required]
         public string PokemonType { get; set; }
         public string PokemonNumber { get; set; }
-
+        public string PokemonColor { get; set; }
         public string PokemonImage { get; set; }
         public string Generation { get; set; }
         [Required]
