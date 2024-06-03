@@ -13,7 +13,7 @@ namespace PokemonRenting.Web.Models.ViewModels.Pokemon
         public string PokemonNumber { get; set; }
         public string PokemonImage { get; set; }
         public string Generation { get; set; }
-
+        public string PokemonColor { get; set; }
         public double PokemonPrice { get; set; }
         public bool IsAvailable { get; set; } 
         public bool IsDeleted { get; set; } 
