@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PokemonRenting.Models;
+using PokemonRenting.Repositories.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,11 +38,11 @@ namespace PokemonRenting.Repositories.DataSeeding
             {
                 throw;
             }
-            if (!_roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
+            if (!_roleManager.RoleExistsAsync(FD.Admin_Role).GetAwaiter().GetResult())
             {
-                _roleManager.CreateAsync(new IdentityRole("Admin"))
+                _roleManager.CreateAsync(new IdentityRole(FD.Admin_Role))
                     .GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole("Customer"))
+                _roleManager.CreateAsync(new IdentityRole(FD.Customer_Role))
                     .GetAwaiter().GetResult();
                 _userManager.CreateAsync(new ApplicationUser
                 {

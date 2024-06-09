@@ -1,4 +1,5 @@
-﻿using PokemonRenting.Models;
+﻿using Microsoft.AspNetCore.Http;
+using PokemonRenting.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,11 +28,14 @@ namespace PokemonRentingModels
         [Required]
         [Column(TypeName = "money")]
         public decimal PokemonPrice { get; set; }
+        [Column(TypeName = "money")]
+        public decimal DailyRate { get; set; }
         public bool IsAvailable { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public string PokemonDescription { get; set;}
-        public virtual  ICollection<Rental> Bookings { get; set; }
+        public string PokemonDescription { get; set; }
+        public virtual ICollection<Rental> Bookings { get; set; }
     }
+   
 }

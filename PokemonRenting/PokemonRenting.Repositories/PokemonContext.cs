@@ -19,5 +19,9 @@ namespace PokemonRenting.Repositories
         }
         public DbSet<Pokemon> Pokemons { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get;  set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<UserDetail> UserDetails { get; set; }
     }
 }

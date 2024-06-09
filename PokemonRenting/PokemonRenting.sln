@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonRenting.Web", "PokemonRenting\PokemonRenting.Web.csproj", "{A42E52CB-CAEB-4D51-B106-BD54894710C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonRenting.Web", "PokemonRenting\PokemonRenting.Web.csproj", "{A42E52CB-CAEB-4D51-B106-BD54894710C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonRenting.Models", "PokemonRentingModels\PokemonRenting.Models.csproj", "{B8FB2AD2-F777-4F5C-AD18-62343A9A23F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonRenting.Models", "PokemonRentingModels\PokemonRenting.Models.csproj", "{B8FB2AD2-F777-4F5C-AD18-62343A9A23F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonRenting.Repositories", "PokemonRenting.Repositories\PokemonRenting.Repositories.csproj", "{C00EEEAD-DA4B-42B8-B691-6A9D46DB0FF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonRenting.Repositories", "PokemonRenting.Repositories\PokemonRenting.Repositories.csproj", "{C00EEEAD-DA4B-42B8-B691-6A9D46DB0FF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

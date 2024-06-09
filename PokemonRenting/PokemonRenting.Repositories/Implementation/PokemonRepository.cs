@@ -18,7 +18,7 @@ namespace PokemonRenting.Repositories.Implementation
         {
             _context = context;
         }
-        public async Task DeletePokemon(int id)
+        public async Task DeletePokemon(int id  )
         {
             var pokemon = await _context.Pokemons.FindAsync(id);
             if (pokemon != null)
@@ -30,7 +30,7 @@ namespace PokemonRenting.Repositories.Implementation
             
         }
 
-        public async Task<Pokemon> GetPokemonById(int id)
+        public async Task<Pokemon> GetPokemonById(int id )
         {
             var pokemon = await _context.Pokemons.FindAsync(id);
             if (pokemon != null)
@@ -38,6 +38,7 @@ namespace PokemonRenting.Repositories.Implementation
                 return pokemon;
             }
             throw new Exception($"Pokemon with ID{id} not found");
+           
         }
 
         public async Task<IEnumerable<Pokemon>> GetPokemons()
@@ -64,6 +65,9 @@ namespace PokemonRenting.Repositories.Implementation
             {
                 pokemonFromDB.PokemonName = pokemon.PokemonName;
                 pokemonFromDB.PokemonType = pokemon.PokemonType;
+                pokemonFromDB.PokemonColor = pokemon.PokemonColor;
+                pokemonFromDB.PokemonNumber = pokemon.PokemonNumber;
+                pokemonFromDB.DailyRate = pokemon.DailyRate;
                 if (pokemon.PokemonImage != null)
                 {
                     pokemonFromDB.PokemonImage = pokemon.PokemonImage;
@@ -72,6 +76,7 @@ namespace PokemonRenting.Repositories.Implementation
                 pokemonFromDB.PokemonPrice = pokemon.PokemonPrice;
                 pokemonFromDB.UpdatedAt = DateTime.UtcNow;
                 pokemonFromDB.PokemonDescription = pokemon.PokemonDescription;        
+                _context.SaveChanges();
              }
         }
     }
