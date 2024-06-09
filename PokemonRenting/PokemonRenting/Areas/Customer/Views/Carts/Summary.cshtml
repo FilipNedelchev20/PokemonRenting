@@ -1,0 +1,79 @@
+﻿@model PokemonRenting.Web.Models.ViewModels.CartVM
+@{
+    ViewData["Title"] = "Summary";
+}
+<form method="post">
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card mb-4">
+            <div class="card-header py-3">
+                <h5 class="mb-0">Shipping details</h5>
+            </div>
+            <div class="card-body">
+               
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="text" asp-for="@Model.OrderHeader.FullName" class="form-control" />
+                                <label class="form-label" for="form7Example1">Name</label>
+                            </div>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <textarea asp-for="@Model.OrderHeader.Address" class="form-control" ></textarea>
+                            <label class="form-label" for="form7Example6">Address</label>
+                        </div>
+                      @*   <div class="form-outline mb-4">
+                            <textarea class="form-control" asp-for="@Model.OrderHeader.Address" rows="4" />
+                            <label class="form-label" for="form7Example7">Address</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" asp-for="@Model.OrderHeader.City" class="form-control" />
+                            <label class="form-label" for="form7Example6">City</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" asp-for="@Model.OrderHeader.Country" class="form-control" />
+                            <label class="form-label" for="form7Example6">Country</label>
+                        </div> *@
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card mb-4">
+            <div class="card-header py-3">
+                <h5 class="mb-0">Summary</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    @foreach(var details in @Model.ListOfCart)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                            <span>@details.Pokemon.PokemonName</span>
+                            <span>Daily Rate : @details.Pokemon.DailyRate
+                                <span>Total Amount : @details.TotalAmount </span>
+                            </span>
+                            <span></span>
+                            
+                        </li>
+                    }
+                    <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                        <div>
+                            <strong>Total amount</strong>
+                            <strong>
+                                <p class="mb-0">(including VAT)</p>
+                            </strong>
+                           
+                        </div>
+                        <span><strong>@Model.OrderHeader.OrderTotal BGN</strong></span>
+                    </li>
+                </ul>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    Make purchase
+                </button>
+               
+            </div>
+        </div>
+    </div>
+</div>
+</form>
