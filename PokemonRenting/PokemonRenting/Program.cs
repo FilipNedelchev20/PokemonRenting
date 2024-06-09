@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
@@ -10,6 +11,8 @@ using PokemonRenting.Repositories.Implementation;
 using PokemonRenting.Repositories.Infrastructure;
 using PokemonRenting.Web.CustomMiddleWare;
 using PokemonRenting.Web.Mapper;
+using PokemonRenting.Web.Utility;
+using Stripe;
 
 namespace PokemonRenting.Web
 {
@@ -30,10 +33,17 @@ namespace PokemonRenting.Web
                 //.AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<PokemonContext>();
             builder.Services.AddControllersWithViews();
+
+       
+
             builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-
-
+            builder.Services.AddScoped<IEmailSender,EmailSender>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICartService,CartService>();
+            builder.Services.AddScoped<IOrderHeaderService, OrderHeaderService>();
+            builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
+            //builder.Services.AddScoped<IFileStorage, FileStorage>();
 
 
             var config = new AutoMapper.MapperConfiguration(cfg =>
@@ -53,6 +63,8 @@ namespace PokemonRenting.Web
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = $"/Identity/Account/Login";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                options.LogoutPath = "/Identity/Account/Logout" ;
             });
 
         
@@ -70,14 +82,15 @@ namespace PokemonRenting.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            //app.UseMiddleware<ExceptionHandlerMiddleware>();
          
             app.UseStaticFiles();
             DataSeeding();
             app.UseSession();
             app.UseRouting();
-          
 
+            StripeConfiguration.ApiKey =
+                builder.Configuration.GetSection("PaymentSettings:SecretKey").Get<string>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
@@ -89,7 +102,7 @@ namespace PokemonRenting.Web
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Details}/{id?}");
             });
 
             app.MapRazorPages();

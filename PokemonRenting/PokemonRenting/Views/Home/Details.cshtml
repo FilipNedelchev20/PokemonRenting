@@ -1,0 +1,64 @@
+﻿@using PokemonRenting.Web.Models.ViewModels.Pokemon
+
+@model PokemonDetailsViewModel
+
+
+<form method="Post" asp-action="Details">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="\@Model.PokemonImage" alt="Pokemon Image" class="img-fluid"/>
+            <input type="hidden" asp-for="PokemonImage"/>\
+
+        </div> 
+        <div class="col-md-8">
+            <h2>@Model.PokemonName</h2>
+          <input type="hidden" asp-for="PokemonName" class="form-control" />
+                <p><strong>Pokemon Type:</strong> <input readonly asp-for="PokemonType" class="form-control"/></p>
+                <p><strong>Pokemon Generation:</strong> <input readonly asp-for="Generation" class="form-control" /></p>
+                <p><strong>Pokemon Number:</strong> <input readonly asp-for="PokemonNumber" class="form-control" /></p>
+                <p><strong>Pokemon Color:</strong> <input readonly asp-for="PokemonColor" class="form-control" /></p>
+                <p><strong>Daily Rate:</strong> <input readonly asp-for="DailyRate" class="form-control" /></p>
+                <div class="form-group">
+                    <label asp-for="StartDate"></label>
+                    <input asp-for="StartDate" class="form-control"/>
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+            <div class="form-group">
+                <label asp-for="ReturnDate"></label>
+                <input asp-for="ReturnDate" class="form-control" />
+                <span asp-validation-for="ReturnDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PokemonDescription"></label>
+                <textarea  readonly asp-for="PokemonDescription" class="form-control" /></textarea>
+                <span asp-validation-for="PokemonDescription" class="text-danger"></span>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Submit"/>
+        </div>
+    </div>
+</form>
+<div>
+    @if (ViewBag.Message!=null)
+    {
+        <span class="alert alert-danger">@ViewBag.Message</span>
+    }
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.validator.addMethod('enddate', function (value, element, params) {
+                var startDateValue = $('#' + params).val();
+                var startDate = Date.parse(startDateValue);
+                var endDate = Date.parse(value);
+
+                return isNaN(startDate) || isNaN(endDate) || endDate >= startDate;
+            });
+
+            $.validator.unobtrusive.adapters.add('enddate', ['startproperty'], function (options) {
+                options.rules['enddate'] = options.params.startproperty;
+                options.messages['enddate'] = options.message;
+            });
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial"/>
+}
