@@ -1,5 +1,5 @@
 ﻿@using PokemonRenting.Web.Models.ViewModels.Pokemon
-@model CreatePokemonViewModel
+@model EditPokemonViewModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -8,35 +8,36 @@
     <h2>Add New Pokemon</h2>
     <hr />
 
-    <form asp-action="Create" asp-controller="Pokemon" enctype="multipart/form-data">
+    <form asp-action="Edit" asp-controller="Pokemon" enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
+                    <input type="hidden" asp-for="Id" name="Id"/>
                     <label for="PokemonName">Pokemon Name:</label>
-                    <input type="text" class="form-control" id="PokemonName" name="PokemonName" required />
+                    <input type="text" class="form-control" asp-for="PokemonName" required />
                 </div>
                 <div class="form-group">
                     <label for="PokemonType">Pokemon Type:</label>
-                    <input type="text" class="form-control" id="PokemonType" name="PokemonType" required />
+                    <input type="text" class="form-control" asp-for="PokemonType" required />
                 </div>
                 <div class="form-group">
                     <label for="Generation">Pokemon Gen:</label>
-                    <input type="text" class="form-control" id="Generation" name="Generation" required />
+                    <input type="text" class="form-control" asp-for="Generation" required />
                 </div>
             </div>
            
              <div class="col-md-4">
                 <div class="form-group">
                     <label for="PokemonNumber">Pokemon Number:</label>
-                    <input type="text" class="form-control" id="PokemonNumber" name="PokemonNumber" required />
+                    <input type="text" class="form-control" asp-for="PokemonNumber" required />
                 </div>
                 <div class="form-group">
                     <label for="PokemonColor">Pokemon Color:</label>
-                    <input type="text" class="form-control" id="PokemonColor" name="PokemonColor" required />
+                    <input type="text" class="form-control" asp-for="PokemonColor" required />
                 </div>
                 <div class="form-group">
                     <label for="PokemonDescription">Pokemon Description:</label>
-                    <textarea class="form-control" id="PokemonDescription" name="PokemonDescription" row="3" required ></textarea>
+                    <textarea class="form-control" asp-for="PokemonDescription" required></textarea>
                 </div>
             </div>
             <div class="col-md-4">
@@ -46,14 +47,14 @@
                 </div>
                 <div class="form-group">
                     <label for="PokemonPrice">Pokemon Price:</label>
-                    <input type="number" class="form-control" id="PokemonPrice" name="PokemonPrice" required />
+                    <input type="number" class="form-control" asp-for="PokemonPrice" required />
                 </div>
                 <div class="form-group">
                     <label for="DailyRate">Daily Rate:</label>
-                    <input  class="form-control" id="DailyRate" name="DailyRate" required />
+                    <input type="number" class="form-control" asp-for="DailyRate" required />
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="IsAvailable" name="IsAvailable">
+                    <input type="checkbox" class="form-check-input" asp-for="IsAvailable" />
                     <label class="form-check-label" for="IsAvailable">Is Available</label>
                 </div>
             </div>

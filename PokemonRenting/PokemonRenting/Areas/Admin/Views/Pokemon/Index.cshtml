@@ -73,11 +73,25 @@
                     <ul class="pagination">
                         @if (Model.PageInfo.HasPreviousPage)
                         {
-                            //<li class="page-item"><a class="page-link" href="?page="</li>
+                            <li class="page-item"><a class="page-link" href="?page=@(Model.PageInfo.CurrentPage - 1)">Previous</a></li>
                         }
                         else
                         {
-                            
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                        }
+                        @for (var i = 1; i <= Model.PageInfo.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.PageInfo.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="?page=@i">@i</a>
+                            </li>
+                        }
+                        @if (Model.PageInfo.HasNextPage)
+                        {
+                            <li class="page-item"><a class="page-link" href="?page=@(Model.PageInfo.CurrentPage + 1)">Next</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
                         }
                     </ul>
                 </nav>
