@@ -13,9 +13,10 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
     {
         private readonly IPokemonRepository _pokemonRepository;
         private IMapper _mapper;
-        public PokemonController(IPokemonRepository pokemonRepository)
+        public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
         {
             _pokemonRepository = pokemonRepository;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10, string SearchingText = null)
@@ -54,6 +55,32 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
             await _pokemonRepository.InsertPokemon(model);
             return RedirectToAction(nameof(Index));
 
+
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var pokemon = await _pokemonRepository.GetPokemonById(id);
+            var pokemonViewModel = _mapper.Map<PokemonViewModel>(pokemon);
+            return View(pokemonViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditPokemonViewModel viewModel)
+        {
+            var model = _mapper.Map<Pokemon>(viewModel);
+            await _pokemonRepository.UpdatePokemon(model);
+            return RedirectToAction(nameof(Index));
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var pokemon = await _pokemonRepository.GetPokemonById(id);
+           await  _pokemonRepository.DeletePokemon(pokemon.Id);
+            
+            return RedirectToAction("Index");
         }
     }
 
