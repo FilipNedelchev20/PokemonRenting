@@ -3,6 +3,7 @@ using PokemonRenting.Models;
 using PokemonRenting.Repositories.Infrastructure;
 using PokemonRenting.Web.Models.ViewModels;
 using PokemonRenting.Web.Utility;
+using Stripe;
 using Stripe.Checkout;
 using System.Security.Claims;
 
@@ -117,6 +118,7 @@ namespace PokemonRenting.Web.Areas.Customer.Controllers
                 options.LineItems.Add(lineItemsOptions);
             }
             var service = new SessionService();
+            
             Session session = service.Create(options);
             _orderHeaderService.UpdateStatus(vm.OrderHeader.Id,session.Id,session.PaymentIntentId);
             Response.Headers.Add("Location", session.Url);

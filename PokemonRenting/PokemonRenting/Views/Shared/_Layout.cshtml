@@ -4,9 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PokemonRenting</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PokemonRenting.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-MQ6vjC/2ho3pO25Q+SH+c1Nn+bbhFQ3bxz3tBOoCEY5P45E2a2im4fQGc3ElA2C" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" integrity="sha512-U9Y1sGB3sLIpZm3ePcrKbXVhXlnQNcuwGQJ2WjPjnp6XHqVTdgIlbaDzJXJIAuCTp3y22t+nhI4B88F/5ldjFA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 </head>
 <body>
     <header>
@@ -23,12 +27,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Rental Request</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Pokemon" asp-action="Index">Rental Request</a>
                         </li>
                         @if(User.IsInRole("Customer"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Carts" asp-action="Index">
+                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Carts" asp-action="Summary">
                                     @await Component.InvokeAsync("Cart")
                                 </a>
                             </li>
@@ -36,13 +40,13 @@
                         @if(User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropDown" role="button" data-toggle="tooltip">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropDown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Content Management
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropDown">
-                                    <a class="dropdown-item text-white" asp-area="Admin" asp-controller="Pokemon" asp-action="Index">Pokemon</a>
-                                    <a class="dropdown-item text-white" asp-area="Admin" asp-controller="Orders" asp-action="Index">Your Orders</a>
-                                    <a class="dropdown-item text-white" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Pokemon" asp-action="Index">Pokemon</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Orders" asp-action="Index">Your Orders</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a>
                                 </div>
                             </li>
                         }
@@ -60,14 +64,17 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @* <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - PokemonRenting - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvDkdE3FtAWbsvrn6PdnA7Y2QK/9O/9HvwBGLYRSV6vXqOuBsj6zMvM8sKVCTod" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4Ag2lFw6Q5Ysf+70+odFZf3lAlxHc/X5u6x8nMtm3vnDA8m6A/JI" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

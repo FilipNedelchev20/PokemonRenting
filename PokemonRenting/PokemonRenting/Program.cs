@@ -82,7 +82,7 @@ namespace PokemonRenting.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            //app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
          
             app.UseStaticFiles();
             DataSeeding();
@@ -102,7 +102,7 @@ namespace PokemonRenting.Web
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Details}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
             app.MapRazorPages();

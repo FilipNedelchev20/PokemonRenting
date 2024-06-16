@@ -14,12 +14,12 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">List of Pokemon</h5>
-            <h5 class="card-title"><a asp-action="Create" class="btn btn-Success">Add new Pokemon</a></h5>
+            <h5 class="card-title"><a asp-action="Create" class="btn btn-success">Add new Pokemon</a></h5>
             <form method="get" action="">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="searchingText" placeholder=""
+                    <input type="text" class="form-control" name="searchingText" placeholder="Search Pokemon..." />
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit" id="button"
+                        <button class="btn btn-outline-secondary" type="submit" id="button">Submit</button>
                     </div>
                 </div>
             </form>
@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.PokemonList.Any())
+                    @if (Model.PokemonList?.Any() == true)
                     {
                         foreach (var pokemon in Model.PokemonList)
                         {
@@ -50,11 +50,11 @@
                                 <td>@pokemon.PokemonNumber</td>
                                 <td>@pokemon.PokemonColor</td>
                                 <td>@pokemon.PokemonDescription</td>
-                                <td><img src="@pokemon.PokemonImage" width="100" height="100"/></td>
+                                <td><img src="@pokemon.PokemonImage" width="90" height="95"/></td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-Id="@pokemon.Id">Edit</a>
-                                    <a asp-action="Details" asp-route-Id="@pokemon.Id">Details</a>
-                                    <a asp-action="Delete" asp-route-Id="@pokemon.Id">Delete</a>
+                                    <a asp-action="Edit" asp-route-id="@pokemon.Id"><i class="bi bi-pencil"></i></a>
+                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@pokemon.Id"><i class="bi bi-info-circle"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@pokemon.Id"><i class="bi bi-trash"></i></a>
                                 </td>
                             </tr>
                         }

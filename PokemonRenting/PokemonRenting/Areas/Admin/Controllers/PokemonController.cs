@@ -31,17 +31,16 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
             }
             var pokemonViewModel = new ListPokemonViewModel
             {
-                PokemonList = viewModelList,
+                PokemonList = viewModelList?.ToList() ?? new List<PokemonViewModel>(),
                 PageInfo = new Utility.PageInfo
                 {
                     ItemsPerPage = pageSize,
                     CurrentPage = pageNumber,
                     TotalItems = _pokemonRepository.GetPokemons().GetAwaiter().GetResult().Count()
                 },
-
-            }
-                ;
-            return View();
+            };
+            return View(pokemonViewModel);
+         
         }
 
         public IActionResult Create()
@@ -63,7 +62,7 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var pokemon = await _pokemonRepository.GetPokemonById(id);
-            var pokemonViewModel = _mapper.Map<PokemonViewModel>(pokemon);
+            var pokemonViewModel = _mapper.Map<EditPokemonViewModel>(pokemon);
             return View(pokemonViewModel);
         }
         [HttpPost]

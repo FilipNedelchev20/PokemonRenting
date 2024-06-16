@@ -8,7 +8,7 @@ using Stripe.Climate;
 using System.Diagnostics;
 using System.Security.Claims;
 
-namespace PokemonRenting.Controllers
+namespace PokemonRenting.Web.Controllers
 {
     public class HomeController : Controller
     {
@@ -34,14 +34,14 @@ namespace PokemonRenting.Controllers
             var viewModel = _mapper.Map<List<PokemonViewModel>>(pokemons);
             return View();
         }
-        public async Task<IActionResult> Details(int id = 1)
+        public async Task<IActionResult> Details(int id)
         {
             var pokemon = await _pokemonRepository.GetPokemonById(id);
             if (pokemon == null)
             {
                 return NotFound();
             }
-            var viewModel= _mapper.Map<PokemonDetailsViewModel>(pokemon);
+            var viewModel = _mapper.Map<PokemonDetailsViewModel>(pokemon);
             return View(viewModel);
         }
         //[HttpPost]

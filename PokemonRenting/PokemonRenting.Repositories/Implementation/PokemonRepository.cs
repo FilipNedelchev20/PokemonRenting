@@ -18,7 +18,7 @@ namespace PokemonRenting.Repositories.Implementation
         {
             _context = context;
         }
-        public async Task DeletePokemon(int id  )
+        public async Task DeletePokemon(int id)
         {
             var pokemon = await _context.Pokemons.FindAsync(id);
             if (pokemon != null)
@@ -33,12 +33,12 @@ namespace PokemonRenting.Repositories.Implementation
         public async Task<Pokemon> GetPokemonById(int id )
         {
             var pokemon = await _context.Pokemons.FindAsync(id);
-            if (pokemon != null)
+            if (pokemon == null)
             {
-                return pokemon;
+                throw new Exception($"Pokemon with ID {id} not found");
             }
-            throw new Exception($"Pokemon with ID{id} not found");
-           
+            
+            return pokemon;
         }
 
         public async Task<IEnumerable<Pokemon>> GetPokemons()

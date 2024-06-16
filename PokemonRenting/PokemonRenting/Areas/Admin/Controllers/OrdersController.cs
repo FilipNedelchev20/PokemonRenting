@@ -110,7 +110,7 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
         public IActionResult CancelOrder(OrderViewModel order)
         {
             var orderHeader = _orderHeaderService.GetOrderHeader(order.OrderHeader.Id);
-           // var orderDetails = _orderDetailsService.GetOrderDetail(order.OrderHeader.Id);
+            var orderDetails = _orderDetailsService.GetOrderDetail(order.OrderHeader.Id);
             if (orderHeader.PaymentStatus == GlobalConfiguration.StatusApproved)
             {
                 var refund = new RefundCreateOptions
