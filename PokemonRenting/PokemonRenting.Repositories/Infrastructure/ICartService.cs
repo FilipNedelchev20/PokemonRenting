@@ -15,6 +15,7 @@ namespace PokemonRenting.Repositories.Infrastructure
         Task<Cart> GetCartItems(string userId, int pokemonId);
         Task<List<Cart>> GetCartItems(string userId);
         Task ClearCart(string userId);
+        Task RemoveFromCart(int cartItemId);
         //Task RemoveFromCart(int pokemonId, string userId);
 
         //Task<decimal> GetTotalAmount(string userId);

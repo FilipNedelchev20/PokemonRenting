@@ -1,60 +1,52 @@
-﻿@* @model PokemonRenting.Web.Models.ViewModels.CartVM
+﻿@model List<PokemonRenting.Models.Cart>
 
 @{
-    ViewData["Title"] = "Shopping Cart";
+    ViewData["Title"] = "Cart";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-@if (Model.ListOfCart.Count == 0)
-{
-    <p>Your cart is empty.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Pokemon</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.ListOfCart)
-            {
+<div class="cart-container">
+    <h2>Your Cart</h2>
+    @if (Model == null || !Model.Any())
+    {
+        <p>Your cart is empty.</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@item.PokemonName</td>
-                    <td>@item.Price.ToString("C")</td>
-                    <td>
-                        <form asp-action="UpdateQuantity" method="post" style="display:inline;">
-                            <input type="hidden" name="PokemonId" value="@item.PokemonId" />
-                            <input type="number" name="Quantity" value="@item.Quantity" min="1" class="form-control" style="width:60px; display:inline;" />
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </form>
-                    </td>
-                    <td>@item.Total.ToString("C")</td>
-                    <td>
-                        <form asp-action="RemoveFromCart" method="post" style="display:inline;">
-                            <input type="hidden" name="PokemonId" value="@item.PokemonId" />
-                            <button type="submit" class="btn btn-danger">Remove</button>
-                        </form>
-                    </td>
+                    <th>Pokemon Name</th>
+                    <th>Pokemon Type</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="3" class="text-right">Total:</th>
-                <th>@Model.ListOfCart.Find(e=> e.TotalAmount).ToString("C")</th>
-                <th></th>
-            </tr>
-        </tfoot>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var cartItem in Model)
+                {
+                    <tr>
+                        <td>@cartItem.Pokemon.PokemonName</td>
+                        <td>@cartItem.Pokemon.PokemonType</td>
+                        <td>
+                            <form asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="cartItemId" value="@cartItem.Id" />
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
-    <form asp-action="Checkout" method="post">
-        <button type="submit" class="btn btn-success">Proceed to Checkout</button>
-    </form>
-} *@
+<style>
+    .cart-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .table {
+        width: 100%;
+    }
+</style>

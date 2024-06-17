@@ -42,6 +42,13 @@ namespace PokemonRenting.Web.Areas.Customer.Controllers
             }
             return View(vm);
         }
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(int cartItemId)
+        {
+            await _cartService.RemoveFromCart(cartItemId);
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Summary()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -118,7 +125,7 @@ namespace PokemonRenting.Web.Areas.Customer.Controllers
             var service = new SessionService();
             
             Session session = service.Create(options);
-            //_orderHeaderService.UpdateStatus(vm.OrderHeader.Id,session.Id,session.PaymentIntentId);
+            
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }

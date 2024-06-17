@@ -39,23 +39,7 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
                 var userId = claim.Value;
                 orderHeader = _orderHeaderService.GetAllOrdersByUserId(userId);
             }
-            //switch (orderStatus)
-            //{
-            //    case "Pending":
-            //            orderHeader.Where(o => o.PaymentStatus == GlobalConfiguration.StatusPending);
-            //        break;
-            //    case "Approved":
-            //        orderHeader=orderHeader.Where(o=> o.PaymentStatus == GlobalConfiguration.StatusApproved);
-            //        break;
-            //    case "InProcess":
-            //        orderHeader = orderHeader.Where(o=> o.OrderStatus == GlobalConfiguration.StatusInProcess);
-            //        break;
-            //    case "Shipped":
-            //        orderHeader = orderHeader.Where(o=>o.OrderStatus == GlobalConfiguration.StatusShipped);
-            //        break;
-            //    default:
-            //        break;
-            //}
+            
             return View(orderHeader);
         }
 
@@ -70,42 +54,42 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
           return View(order);
 
         }
-        //[HttpPost]
-        //public IActionResult PayNow(OrderViewModel order)
-        //{
-        //    var orderHeader = _orderHeaderService.GetOrderHeader(order.OrderHeader.Id);
-        //    var orderDetails = _orderDetailsService.GetOrderDetail(order.OrderHeader.Id);
-        //    var domain = "http://localhost:7256";
-        //    var options = new SessionCreateOptions
-        //    {
-        //        LineItems = new List<SessionLineItemOptions>(),
-        //        Mode = "payment",
-        //        SuccessUrl = domain + $"customer/carts/OrderSuccess?id={order.OrderHeader.Id}",
-        //        CancelUrl = domain + $"customer/carts/Index",
-        //    };
-        //    foreach (var item in orderDetails)
-        //    {
-        //        var lineItemsOptions = new SessionLineItemOptions
-        //        {
-        //            PriceData = new SessionLineItemPriceDataOptions
-        //            {
-        //                UnitAmount = (long)(item. * 100),
-        //                Currency = "BGN",
-        //                ProductData = new SessionLineItemPriceDataProductDataOptions
-        //                {
-        //                    Name = item.Pokemon.PokemonName,
-        //                },
-        //            },
-        //            Quantity = orderDetails.Count(),
-        //        };
-        //        options.LineItems.Add(lineItemsOptions);
-        //    }
-        //    var service = new SessionService();
-        //    Session session = service.Create(options);
-           
-        //    Response.Headers.Add("Location", session.Url);
-        //    return new StatusCodeResult(303);
-        //}
+        [HttpPost]
+        public IActionResult PayNow(OrderViewModel order)
+        {
+            var orderHeader = _orderHeaderService.GetOrderHeader(order.OrderHeader.Id);
+            var orderDetails = _orderDetailsService.GetOrderDetail(order.OrderHeader.Id);
+            var domain = "http://localhost:7256";
+            var options = new SessionCreateOptions
+            {
+                LineItems = new List<SessionLineItemOptions>(),
+                Mode = "payment",
+                SuccessUrl = domain + $"customer/carts/OrderSuccess?id={order.OrderHeader.Id}",
+                CancelUrl = domain + $"customer/carts/Index",
+            };
+            foreach (var item in orderDetails)
+            {
+                var lineItemsOptions = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(item.OrderHeader.TotalAmount * 100),
+                        Currency = "BGN",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.Pokemon.PokemonName,
+                        },
+                    },
+                    Quantity = orderDetails.Count(),
+                };
+                options.LineItems.Add(lineItemsOptions);
+            }
+            var service = new SessionService();
+            Session session = service.Create(options);
+
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
+        }
         //[HttpPost]
         //public IActionResult CancelOrder(OrderViewModel order)
         //{

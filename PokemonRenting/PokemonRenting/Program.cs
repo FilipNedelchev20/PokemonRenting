@@ -12,6 +12,7 @@ using PokemonRenting.Repositories.Infrastructure;
 using PokemonRenting.Web.CustomMiddleWare;
 using PokemonRenting.Web.Mapper;
 using PokemonRenting.Web.Utility;
+using PokemonRentingModels;
 using Stripe;
 
 namespace PokemonRenting.Web
@@ -40,7 +41,12 @@ namespace PokemonRenting.Web
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             builder.Services.AddScoped<IEmailSender,EmailSender>();
             builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<ICartService,CartService>();
+            builder.Services.AddScoped<ICartService>(provider =>
+            {
+                var context = provider.GetRequiredService<PokemonContext>();
+                var cartItems = new List<Pokemon>(); // Or retrieve from a specific source
+                return new CartService(context, cartItems);
+            });
             builder.Services.AddScoped<IOrderHeaderService, OrderHeaderService>();
             builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
             //builder.Services.AddScoped<IFileStorage, FileStorage>();
@@ -82,7 +88,7 @@ namespace PokemonRenting.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
+           // app.UseMiddleware<ExceptionHandlerMiddleware>();
          
             app.UseStaticFiles();
             DataSeeding();
