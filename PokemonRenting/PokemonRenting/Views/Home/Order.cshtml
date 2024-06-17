@@ -1,0 +1,56 @@
+﻿@model PokemonRenting.Web.Models.ViewModels.Pokemon.SummaryViewModel
+
+@{
+    ViewData["Title"] = "Order Summary";
+}
+
+<h2>Order Summary</h2>
+
+<form asp-action="Order" method="post" class="form-horizontal">
+    <div class="form-group">
+        <label asp-for="Id" class="control-label"></label>
+        <input asp-for="Id" class="form-control" readonly />
+        <span asp-validation-for="Id" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate" class="control-label"></label>
+        <input asp-for="StartDate" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReturnDate" class="control-label"></label>
+        <input asp-for="ReturnDate" class="form-control" />
+        <span asp-validation-for="ReturnDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DailyRate" class="control-label"></label>
+        <input asp-for="DailyRate" class="form-control" readonly />
+        <span asp-validation-for="DailyRate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TotalAmount" class="control-label"></label>
+        <input asp-for="TotalAmount" class="form-control" readonly />
+        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <img src="@Model.PokemonImage" alt="Pokemon Image" class="img-responsive" />
+    </div>
+
+    <div class="card-footer">
+        <form asp-action="AddToCart" asp-controller="Home" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-success">Place Order</button>
+        </form>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

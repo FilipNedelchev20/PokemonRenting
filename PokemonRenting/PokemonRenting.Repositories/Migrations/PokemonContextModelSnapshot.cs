@@ -272,20 +272,23 @@ namespace PokemonRenting.Repositories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<decimal>("DailyRate")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("OrderHeaderId")
                         .HasColumnType("int");
 
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("RentalTotal")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("TotalDuration")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -304,45 +307,19 @@ namespace PokemonRenting.Repositories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("DateOfOrder")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateOfPayment")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateOfRent")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrderStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("OrderTotal")
-                        .HasColumnType("money");
-
-                    b.Property<string>("PaymentIntentId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SessionId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("OrderHeaders");
                 });
@@ -563,7 +540,7 @@ namespace PokemonRenting.Repositories.Migrations
             modelBuilder.Entity("PokemonRenting.Models.OrderDetail", b =>
                 {
                     b.HasOne("PokemonRenting.Models.OrderHeader", "OrderHeader")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -581,13 +558,13 @@ namespace PokemonRenting.Repositories.Migrations
 
             modelBuilder.Entity("PokemonRenting.Models.OrderHeader", b =>
                 {
-                    b.HasOne("PokemonRenting.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("PokemonRenting.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PokemonRenting.Models.Rental", b =>
@@ -612,6 +589,11 @@ namespace PokemonRenting.Repositories.Migrations
             modelBuilder.Entity("PokemonRenting.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("PokemonRenting.Models.OrderHeader", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("PokemonRentingModels.Pokemon", b =>

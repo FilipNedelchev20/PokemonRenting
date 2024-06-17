@@ -11,23 +11,12 @@ namespace PokemonRenting.Models
 {
     public class OrderHeader
     {
+        [Key]
         public int Id { get; set; }
-        public string ApplicationUserId { get; set; }
-        [ValidateNever]
-        public ApplicationUser ApplicationUser { get; set; }
-        [Required]
-        public DateTime DateOfOrder { get; set; }
-        public DateTime DateOfRent { get; set; }
-        [Column(TypeName ="money")]
-        public decimal OrderTotal { get; set; }
-        public string? OrderStatus { get; set; }
-        public string? PaymentStatus { get; set; }
-        public string? SessionId { get; set; }
-        public string? PaymentIntentId { get; set; }
-        public DateTime DateOfPayment { get; set; }
-        [Required]
-        public string Address { get; set; }
-        [Required]
-        public string FullName { get; set; }
+        public string UserId { get; set; }
+        public DateTime OrderDate { get; set; }
+        public decimal TotalAmount { get; set; }       
+        public ApplicationUser User { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

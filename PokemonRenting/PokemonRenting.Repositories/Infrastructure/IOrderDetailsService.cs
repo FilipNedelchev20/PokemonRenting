@@ -1,4 +1,4 @@
-﻿using PokemonRenting.Models;
+﻿    using PokemonRenting.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace PokemonRenting.Repositories.Infrastructure
 {
     public interface IOrderDetailsService
     {
-        void Insert(OrderDetail orderDetail);
-       IEnumerable<OrderDetail> GetOrderDetail(int orderHeaderId);
+        Task CreateOrderDetails(OrderDetail orderDetail);
+        IEnumerable<OrderDetail> GetOrderDetail(int orderHeaderId);
     }
 }

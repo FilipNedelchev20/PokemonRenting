@@ -1,4 +1,5 @@
 ﻿using PokemonRenting.Models;
+using PokemonRentingModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace PokemonRenting.Repositories.Infrastructure
 {
     public interface ICartService
     {
+        void AddToCart(Pokemon pokemon);
         Task AddToCart(Cart cart);
         Task<Cart> GetCartItems(string userId, int pokemonId);
         Task<List<Cart>> GetCartItems(string userId);

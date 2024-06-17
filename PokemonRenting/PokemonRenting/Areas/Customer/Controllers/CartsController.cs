@@ -38,7 +38,7 @@ namespace PokemonRenting.Web.Areas.Customer.Controllers
             };
             foreach (var item in cartList)
             {
-                vm.OrderHeader.OrderTotal += item.TotalAmount;
+                vm.OrderHeader.TotalAmount += item.TotalAmount;
             }
             return View(vm);
         }
@@ -53,12 +53,11 @@ namespace PokemonRenting.Web.Areas.Customer.Controllers
                 OrderHeader = new OrderHeader()
             };
             var user =  _userService.GetApplicationUser(claim.Value);
-            vm.OrderHeader.Address = user.Address;
-            vm.OrderHeader.FullName = user.FullName;
-            vm.OrderHeader.ApplicationUser = user;
+            
+            vm.OrderHeader.User = user;
             foreach (var item in cartList)
             {
-                vm.OrderHeader.OrderTotal += item.TotalAmount;
+                vm.OrderHeader.TotalAmount += item.TotalAmount;
             }
             return View(vm);
         }
@@ -70,15 +69,14 @@ namespace PokemonRenting.Web.Areas.Customer.Controllers
             var cartList = await _cartService.GetCartItems(claims.Value);
 
             vm.ListOfCart = cartList;
-            vm.OrderHeader.OrderStatus = GlobalConfiguration.StatusPending;
-            vm.OrderHeader.PaymentStatus = GlobalConfiguration.StatusPending;
-            vm.OrderHeader.DateOfOrder = DateTime.Now;
-            vm.OrderHeader.ApplicationUserId = claims.Value;
+         
+            vm.OrderHeader.OrderDate = DateTime.Now;
+            vm.OrderHeader.UserId = claims.Value;
             foreach (var item in cartList)
             {
-                vm.OrderHeader.OrderTotal += (item.TotalAmount);
+                vm.OrderHeader.TotalAmount += (item.TotalAmount);
             }
-            _orderHeaderService.Insert(vm.OrderHeader);
+            _orderHeaderService.CreateOrderHeader(vm.OrderHeader);
             foreach (var item in vm.ListOfCart)
             {
                 var orderDetail = new OrderDetail
@@ -87,9 +85,9 @@ namespace PokemonRenting.Web.Areas.Customer.Controllers
                     PokemonId = item.PokemonId,
                     StartDate = item.StartDate,
                     ReturnDate = item.ReturnDate,
-                    RentalTotal = item.TotalAmount
+                    
                 };
-                _orderDetailsService.Insert(orderDetail);
+                _orderDetailsService.CreateOrderDetails(orderDetail);
             }
             await _cartService.ClearCart(claims.Value);
             var domain = "http://localhost:7256/";
@@ -120,22 +118,22 @@ namespace PokemonRenting.Web.Areas.Customer.Controllers
             var service = new SessionService();
             
             Session session = service.Create(options);
-            _orderHeaderService.UpdateStatus(vm.OrderHeader.Id,session.Id,session.PaymentIntentId);
+            //_orderHeaderService.UpdateStatus(vm.OrderHeader.Id,session.Id,session.PaymentIntentId);
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
-        public IActionResult OrderSuccess(int id)
-        {
-            var orderHeader = _orderHeaderService.GetOrderHeader(id);
-            var service = new SessionService();
-            Session session = service.Get(orderHeader.SessionId);
-            if (session.PaymentStatus == "Paid")
-            {
-                _orderHeaderService.UpdateStatus(orderHeader.Id, session.Id, session.PaymentIntentId);
-                _orderHeaderService.UpdateOrderStatus(orderHeader.Id, GlobalConfiguration.StatusApproved, GlobalConfiguration.StatusApproved);
-            }
-            return View(id); 
-        }
+        //public IActionResult OrderSuccess(int id)
+        //{
+        //    var orderHeader = _orderHeaderService.GetOrderHeader(id);
+        //    var service = new SessionService();
+        //    Session session = service.Get(orderHeader.SessionId);
+        //    if (session.PaymentStatus == "Paid")
+        //    {
+        //        _orderHeaderService.UpdateStatus(orderHeader.Id, session.Id, session.PaymentIntentId);
+        //        _orderHeaderService.UpdateOrderStatus(orderHeader.Id, GlobalConfiguration.StatusApproved, GlobalConfiguration.StatusApproved);
+        //    }
+        //    return View(id); 
+        //}
     }
     
 }

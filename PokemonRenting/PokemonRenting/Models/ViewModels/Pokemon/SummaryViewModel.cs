@@ -19,7 +19,7 @@ namespace PokemonRenting.Web.Models.ViewModels.Pokemon
         public DateTime StartDate { get; set; }
     
 
-        public DateTime? ReturnDate { get; set; }
+        public DateTime ReturnDate { get; set; }
         public int TotalDuration { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }

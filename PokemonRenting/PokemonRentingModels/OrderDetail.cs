@@ -12,20 +12,18 @@ namespace PokemonRenting.Models
 {
     public class OrderDetail
     {
+        [Key]
         public int Id { get; set; }
-        [ForeignKey(nameof(OrderHeaderId))]
-        [Required]
+
         public int OrderHeaderId { get; set; }
-        [ValidateNever]
-        public OrderHeader OrderHeader { get; set; }
-        [ForeignKey(nameof(PokemonId))]
-        [Required]
         public int PokemonId { get; set; }
-        [ValidateNever]
-        public Pokemon Pokemon { get; set; }
-      
-        public decimal RentalTotal { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? ReturnDate { get; set; }
+        public decimal DailyRate { get; set; }
+        public int TotalDuration { get; set; }
+
+        // Navigation properties
+        public OrderHeader OrderHeader { get; set; }
+        public Pokemon Pokemon { get; set; }
     }
 }

@@ -24,10 +24,10 @@ namespace PokemonRenting.Repositories.Implementation
                 .Include(y=> y.Pokemon).ToList();
         }
 
-        public void Insert(OrderDetail orderDetail)
+        public async Task CreateOrderDetails(OrderDetail orderDetail)
         {
-            _context.OrderDetails.Add(orderDetail);
-            _context.SaveChanges();
+           await _context.OrderDetails.AddAsync(orderDetail);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -9,11 +9,10 @@ namespace PokemonRenting.Repositories.Infrastructure
 {
     public interface IOrderHeaderService
     {
-        void Insert(OrderHeader orderHeader);
+        Task CreateOrderHeader(OrderHeader orderHeader);
         OrderHeader GetOrderHeader(int id);
         IEnumerable<OrderHeader> GetAllOrders();
         IEnumerable<OrderHeader> GetAllOrdersByUserId(string userId);
-        void UpdateOrderStatus(int orderHeaderId, string orderStatus, string paymentStatus);
-        void UpdateStatus(int orderHeaderId, string sessionId, string paymentIntentId);
+      
     }
 }

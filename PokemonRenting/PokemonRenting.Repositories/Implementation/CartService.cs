@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PokemonRenting.Models;
 using PokemonRenting.Repositories.Infrastructure;
+using PokemonRentingModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,19 @@ namespace PokemonRenting.Repositories.Implementation
     public class CartService : ICartService
     {
         private readonly PokemonContext _context;
+        private List<Pokemon> _cartItems;
 
-        public CartService(PokemonContext context)
+
+        public CartService(PokemonContext context, List<Pokemon> cartItems)
         {
             _context = context;
+            _cartItems = cartItems;
         }
+        public void AddToCart(Pokemon pokemon)
+        {
+            _cartItems.Add(pokemon);
+        }
+      
 
         public async Task AddToCart(Cart cart)
         {

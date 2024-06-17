@@ -1,8 +1,40 @@
-﻿@{
+﻿@model IEnumerable<PokemonRenting.Web.Models.ViewModels.Pokemon.PokemonViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <h2 class="text-center">Welcome to Pokémon Renting</h2>
+    <p class="text-center">Find your favorite Pokémon and rent them easily!</p>
+
+    @* @if (Model != null && Model.Any())
+    {
+       *@  @foreach (var pokemon in Model)
+        {
+            <div class="row">
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="@pokemon.PokemonImage" class="card-img-top" alt="@pokemon.PokemonName">
+                        <div class="card-body">
+                            <h5 class="card-title">@pokemon.PokemonName</h5>
+                            <p class="card-text">@pokemon.PokemonDescription</p>
+                            <p class="card-text"><strong>Daily Rate: </strong>@pokemon.DailyRate.ToString("C")</p>
+                        </div>
+                        <div class="card-footer">
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@pokemon.Id" class="btn btn-primary">View Details</a>
+                            @* Rental Request button with necessary parameters *@
+                            <a asp-controller="Home" asp-action="Order" asp-route-PokemonId="@pokemon.Id" asp-route-StartDate="@(DateTime.Now.ToString("yyyy-MM-dd"))" asp-route-ReturnDate="@(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))" asp-route-DailyRate="@pokemon.DailyRate" asp-route-PokemonImage="@pokemon.PokemonImage" class="btn btn-success ml-2">Rental Request</a>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+        }
+   @*  }
+    else
+    {
+        <p class="text-center">No Pokémon available for rent at the moment. Please check back later.</p>
+    } *@
 </div>
