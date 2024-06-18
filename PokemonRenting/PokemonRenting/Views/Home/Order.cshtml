@@ -7,6 +7,11 @@
 <h2>Order Summary</h2>
 
 <form asp-action="Order" method="post" class="form-horizontal">
+    <div class="col-md-4">
+        <img src="\@Model.PokemonImage" alt="Pokemon Image" class="img-fluid" />
+        <input type="hidden" asp-for="PokemonImage" />
+
+    </div>
     <div class="form-group">
         <label asp-for="Id" class="control-label"></label>
         <input asp-for="Id" class="form-control" readonly />
@@ -37,17 +42,13 @@
         <span asp-validation-for="TotalAmount" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <img src="@Model.PokemonImage" alt="Pokemon Image" class="img-responsive" />
-    </div>
 
-    <div class="card-footer">
-        <form asp-action="AddToCart" asp-controller="Home" method="post">
-            <input type="hidden" name="id" value="@Model.Id" />
-            <button type="submit" class="btn btn-success">Place Order</button>
-        </form>
-    </div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-success ml-2">AddToCart </a>
+
 </form>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl6v0l3/Q0R3UCCa6hB7xaIW8L2Vfb1YnoMZVfmDd3PeG6yfZBf1AIwJ9zB" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
 @section Scripts {
     @{

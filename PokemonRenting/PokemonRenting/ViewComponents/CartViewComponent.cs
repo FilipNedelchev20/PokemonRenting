@@ -26,7 +26,7 @@ namespace PokemonRenting.Web.ViewComponents
                 }
                 else
                 {
-                    HttpContext.Session.SetInt32("SessionCart",  _cartService.GetCartItems(userId).GetAwaiter().GetResult().Count());
+                    //HttpContext.Session.SetInt32("SessionCart",  _cartService.GetCartItems(userId).GetAwaiter().GetResult().Count());
                     return View(HttpContext.Session.GetInt32("SessionCart"));
                 }
             }

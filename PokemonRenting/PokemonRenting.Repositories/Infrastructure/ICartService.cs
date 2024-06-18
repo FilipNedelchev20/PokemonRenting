@@ -12,9 +12,9 @@ namespace PokemonRenting.Repositories.Infrastructure
     {
         void AddToCart(Pokemon pokemon);
         Task AddToCart(Cart cart);
-        Task<Cart> GetCartItems(string userId, int pokemonId);
-        Task<List<Cart>> GetCartItems(string userId);
-        Task ClearCart(string userId);
+        Task<Cart> GetCartItems(Guid userId, int pokemonId);
+        Task<List<Cart>> GetCartItems(Guid userId);
+        Task ClearCart(Guid userId);
         Task RemoveFromCart(int cartItemId);
         //Task RemoveFromCart(int pokemonId, string userId);
 

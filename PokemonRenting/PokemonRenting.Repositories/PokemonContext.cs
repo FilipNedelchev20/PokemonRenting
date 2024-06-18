@@ -23,5 +23,6 @@ namespace PokemonRenting.Repositories
         public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<UserDetail> UserDetails { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }

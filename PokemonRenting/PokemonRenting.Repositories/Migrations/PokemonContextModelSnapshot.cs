@@ -239,6 +239,9 @@ namespace PokemonRenting.Repositories.Migrations
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
 

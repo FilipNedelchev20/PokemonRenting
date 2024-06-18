@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PokemonRenting.Models;
+using PokemonRenting.Repositories;
 using PokemonRenting.Repositories.Implementation;
 using PokemonRenting.Repositories.Infrastructure;
+using PokemonRenting.Web.Models.ViewModels;
 using PokemonRenting.Web.Models.ViewModels.Order;
 using PokemonRenting.Web.Models.ViewModels.Pokemon;
 using PokemonRentingModels;
@@ -19,9 +23,10 @@ namespace PokemonRenting.Web.Controllers
         private IMapper _mapper;
         private IUserService _userService;
         private ICartService _cartService;
+        private PokemonContext _context;
         private IOrderDetailsService _orderDetailsService;
         private IOrderHeaderService _orderHeaderService;
-        public HomeController(IPokemonRepository pokemonRepository, IMapper mapper, IUserService userService, ICartService cartService, IOrderDetailsService orderDetailsService, IOrderHeaderService orderHeaderService)
+        public HomeController(IPokemonRepository pokemonRepository, IMapper mapper, IUserService userService, ICartService cartService, IOrderDetailsService orderDetailsService, IOrderHeaderService orderHeaderService, PokemonContext context)
         {
             _pokemonRepository = pokemonRepository;
             _mapper = mapper;
@@ -29,6 +34,7 @@ namespace PokemonRenting.Web.Controllers
             _cartService = cartService;
             _orderDetailsService = orderDetailsService;
             _orderHeaderService = orderHeaderService;
+            this._context = context;
         }
 
 
@@ -107,50 +113,70 @@ namespace PokemonRenting.Web.Controllers
 
             return View(vm);
         }
-        [HttpPost]
-        [Authorize(Roles = "Customer")]
-        public async Task<IActionResult> Details(PokemonDetailsViewModel vm)
+
+        [HttpGet]
+        public IActionResult AddToCart(int id)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var applicationUser = _userService.GetApplicationUser(claims.Value);
-            var cart = _cartService.GetCartItems(claims.Value, vm.Id);
-            if (cart == null)
+            List<Cart> cart = GetCartItems();
+            var cartItem = cart.Find(item => item.PokemonId == id);
+
+            if (cartItem == null)
             {
-                if (ModelState.IsValid)
-                {
-                    Cart cartObj = new Cart();
-                    TimeSpan duration = (TimeSpan)(vm.ReturnDate - vm.StartDate);
-                    cartObj.TotalAmount = vm.DailyRate * duration.Days;
-                    cartObj.ReturnDate = vm.ReturnDate;
-                    cartObj.StartDate = vm.StartDate;
-                    cartObj.TotalAmount = vm.TotalAmount;
-                    cartObj.TotalDuration = duration.Days;
-                    cartObj.Pokemon.PokemonImage = vm.PokemonImage;
-                    cartObj.Pokemon.Id = vm.Id;
-                    cartObj.User = applicationUser;
-                    await _cartService.AddToCart(cartObj);
-                    return RedirectToAction("Index", "Home");
-                }
+                cart.Add(new Cart { PokemonId = id });
             }
             else
             {
-                ViewBag.Message = "Pokemon already added to cart";
+                cartItem.Quantity++;
             }
 
-            return View(vm);
+            SaveCartItems(cart);
+
+            return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> AddToCart(int id)
+        [HttpPost]
+        public IActionResult ClearCart()
         {
-            var pokemon = await _pokemonRepository.GetPokemonById(id);
-            if (pokemon == null)
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Guid userId = Guid.Parse(userIdString);
+
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .FirstOrDefault(c => c.UserId == userId);
+
+            if (cart != null)
             {
-                return NotFound();
+                _context.CartItems.RemoveRange(cart.CartItems);
+                _context.Carts.Remove(cart);
+                _context.SaveChanges();
             }
 
-            _cartService.AddToCart(pokemon);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
+        }
+        private List<Cart> GetCartItems()
+        {
+            var sessionCart = HttpContext.Session.GetString("Cart");
+            return sessionCart == null ? new List<Cart>() : JsonConvert.DeserializeObject<List<Cart>>(sessionCart);
+        }
+
+        private void SaveCartItems(List<Cart> cart)
+        {
+            HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart));
+        }
+
+        // Example action that prepares the CartVM for the Summary view
+        public IActionResult Summary()
+        {
+            var cartVM = new CartVM
+            {
+                ListOfCart = GetCartItems(),
+                OrderHeader = new OrderHeader()
+            };
+
+            return View(cartVM);
         }
     }
+
+    
+
 }

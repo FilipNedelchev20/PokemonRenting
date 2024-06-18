@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PokemonRenting.Repositories.Implementation
 {
@@ -20,8 +21,11 @@ namespace PokemonRenting.Repositories.Implementation
 
         public IEnumerable<OrderHeader> GetAllOrders()
         {
-            var orders = _context.OrderHeaders.Include(x=> x.UserId).ToList();
-            return orders;
+            return _context.OrderHeaders
+                .Include(order => order.User) // Ensure this is a navigation property
+                .Include(order => order.OrderDetails) // Ensure this is a navigation property
+                .ThenInclude(detail => detail.Pokemon) // Ensure this is a navigation property within OrderDetails
+                .ToList();
         }
 
         public IEnumerable<OrderHeader> GetAllOrdersByUserId(string userId)

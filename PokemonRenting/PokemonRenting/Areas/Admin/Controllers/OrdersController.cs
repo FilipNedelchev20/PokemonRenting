@@ -25,7 +25,7 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [Authorize]
-        public IActionResult Index(string orderStatus)
+        public IActionResult Index()
         {
             IEnumerable<OrderHeader> orderHeader;
             if (User.IsInRole("Admin"))
@@ -90,28 +90,7 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
-        //[HttpPost]
-        //public IActionResult CancelOrder(OrderViewModel order)
-        //{
-        //    var orderHeader = _orderHeaderService.GetOrderHeader(order.OrderHeader.Id);
-        //    var orderDetails = _orderDetailsService.GetOrderDetail(order.OrderHeader.Id);
-        //    if (orderHeader.PaymentStatus == GlobalConfiguration.StatusApproved)
-        //    {
-        //        var refund = new RefundCreateOptions
-        //        {
-
-        //        };
-        //        var service = new RefundService();
-        //        Refund reFund = service.Create(refund);
-        //        _orderHeaderService.UpdateOrderStatus(orderHeader.Id,GlobalConfiguration.StatusCancelled, GlobalConfiguration.StatusApproved);
-        //    }
-        //    else
-        //    {
-
-        //    }
-        //    TempData["success"] = "Order Cancelled";
-        //    return RedirectToAction("Details", "Orders", new {id= order.OrderHeader.Id});
-        //}
+        
         [HttpGet]
         public IActionResult UpdateUserDetail(string userId)
         {
@@ -119,14 +98,7 @@ namespace PokemonRenting.Web.Areas.Admin.Controllers
             vm.UserId = userId;
             return View(vm);
         }
-        //[HttpPost]
-        //public IActionResult UpdateUserDetail(UserDetailViewModel vm)
-        //{
-        //    if (vm.TrainerLevel!= null || vm.PhotoProfId!= null)
-        //    {
-        //        string 
-        //    }
-        //}
+        
 
     }
 }

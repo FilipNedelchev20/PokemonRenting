@@ -33,24 +33,24 @@ namespace PokemonRenting.Repositories.Implementation
             await _context.SaveChangesAsync();
         }
 
-        public async Task ClearCart(string userId)
+        public async Task ClearCart(Guid userId)
         {
-            var cartItems = await _context.Carts.Where(x=> x.User.Id == userId).ToListAsync();
+            var cartItems = await _context.Carts.Where(x => x.UserId == userId).ToListAsync();
             _context.Carts.RemoveRange(cartItems);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Cart> GetCartItems(string userId, int pokemonId)
+        public async Task<Cart> GetCartItems(Guid userId, int pokemonId)
         {
-           var cart = await _context.Carts.Where(c=> c.User.Id == userId && c.PokemonId == pokemonId).FirstOrDefaultAsync();
+           var cart = await _context.Carts.Where(c=> c.UserId == userId && c.PokemonId == pokemonId).FirstOrDefaultAsync();
             return cart;
         }
 
-        public async Task<List<Cart>> GetCartItems(string userId)
+        public async Task<List<Cart>> GetCartItems(Guid userId)
         {
             var cartItems = await _context.Carts
                                           .Include(c => c.Pokemon) // Ensure Pokemon is included
-                                          .Where(x => x.User.Id == userId)
+                                          .Where(x => x.UserId == userId)
                                           .ToListAsync();
             return cartItems;
         }

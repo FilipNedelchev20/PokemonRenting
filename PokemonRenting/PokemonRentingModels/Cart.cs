@@ -15,11 +15,14 @@ namespace PokemonRenting.Models
         [ForeignKey(nameof(PokemonId))]
         public int PokemonId { get; set; }
         public Pokemon Pokemon { get; set; }
-        
+        public int Quantity { get; set; } = 1;
         public decimal TotalAmount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? ReturnDate { get; set; }
         public int TotalDuration { get; set; }
-        public ApplicationUser User { get; set; }   
+      
+        public Guid UserId { get; set; }
+      
+        public List<CartItem> CartItems { get; set; } = new List<CartItem>();
     }
 }
